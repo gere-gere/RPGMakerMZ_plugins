@@ -4,6 +4,8 @@
 // ----------------------------------------------------------------------------
 // Released under the MIT License.
 // https://opensource.org/licenses/mit-license.php
+// ----------------------------------------------------------------------------
+// Version 1.0.0
 //=============================================================================
 /*:ja
  * @target MZ
@@ -44,17 +46,19 @@
 
 (() => {
     'use strict';
-    const pluginName = '******';
+    const PLUGIN_NAME = 'プラグイン名';
+    const COMMAND1 = 'プラグインコマンド名'
+    //以下、コマンドの種類分だけ繰り返し
 
     //プラグインパラメータ=================================================
-    const parameters = PluginManager.parameters(pluginName);
-    //以後、parameters['パラメータ名']の形で値を取得していく
+    const PARAMETERS = PluginManager.parameters(PLUGIN_NAME);
+    //以後、PARAMETERS['パラメータ名']の形で値を取得していく
 
 
 
     //プラグインコマンド===================================================
-    PluginManager.registerCommand(pluginName, "", args => {
-
+    PluginManager.registerCommand(PLUGIN_NAME, "", args => {
+        //プラグインコマンドの開始処理
     });
 
     //実処理==============================================================
