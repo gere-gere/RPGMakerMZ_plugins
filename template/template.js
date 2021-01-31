@@ -46,7 +46,7 @@
 
 (() => {
     'use strict';
-    const PLUGIN_NAME = 'プラグイン名';
+    const PLUGIN_NAME = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const COMMAND1 = 'プラグインコマンド名'
     //以下、コマンドの種類分だけ繰り返し
 
