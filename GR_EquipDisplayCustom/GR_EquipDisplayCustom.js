@@ -5,7 +5,7 @@
 // Released under the MIT License.
 // https://opensource.org/licenses/mit-license.php
 // ----------------------------------------------------------------------------
-// Version 1.0.0
+// Version 1.1.0
 //=============================================================================
 /*:ja
  * @target MZ
@@ -77,6 +77,14 @@
  * @type boolean
  * @on オン
  * @off オフ
+ *
+ * @param Adjustment
+ * @text 自動調整
+ * @desc 表示項目数が７個以上の場合に文字サイズや表示位置の微調整を行うか
+ * @default true
+ * @type boolean
+ * @on オン
+ * @off オフ
  * 
  * @help
  * 装備画面のステータスに表示させる項目を任意で変更できるようにします。
@@ -88,16 +96,18 @@
  * 各能力値についてオン/オフの設定を個別に用意しましたので、
  * プラグインパラメータから設定してください。
  * 初期値では標準機能と同様の上記６項目です。
+ *
+ * なお、元々は６項目しか表示しない箇所に最大で８項目をねじ込みますので、
+ * 項目数によってわずかに文字を小さくしたり行間隔を詰めたりします。
+ * 　→Ver1.1.0でレイアウト調整のオン/オフ機能を実装。
+ * 　レイアウト調整が不要、返って邪魔になる場合は「自動調整」をオフにしてください。
  * 
  * プラグインコマンドはありません。
  * 
  * 『注意点』
- * ・装備画面のレイアウトを調整する性質上、他の装備画面レイアウト変更プラグインとは
+ * 装備画面のレイアウトを調整する性質上、他の装備画面レイアウト変更プラグインとは
  * 競合する可能性が高いと思います。
  * 相談されれば対応を検討しますがあまり期待はしないでね。
- * ・元々は６項目しか表示しない箇所に最大で８項目をねじ込みますので、
- * 項目数によってわずかに文字を小さくしたり行間隔を詰めたりします。
- * 気にならない程度の調整のつもりですが、念のためにご承知おきください。
  *
  */
 
@@ -106,7 +116,7 @@
 {
   const PLUGIN_NAME = 'GR_EquipDisplayCustom';
 
-  //プラグインパラメータ=================================================
+  // プラグインパラメータ=================================================
   const PARAMETERS = PluginManager.parameters(PLUGIN_NAME);
   const PARAM_DISP = Array(8);
   let index = 0;
@@ -115,18 +125,22 @@
     PARAM_DISP[index] = value === 'true' ? true : false;
     if (PARAM_DISP[index] === true) onCount++;
     index++;
+    if (index === 8) break;
   }
+  const ADJUST_FLAG = PARAMETERS.Adjustment === 'true' ? true : false;
 
-  //実処理==============================================================
+  // 実処理==============================================================
   Window_EquipStatus.prototype.drawAllParams = function () {
     let dispIndex = 0;
     // 標準のフォントサイズを一時保存
     const tempFontSize = this.contents.fontSize;
-    // 表示項目数に応じてフォントサイズを調整
-    if (onCount === 7) {
-      this.contents.fontSize -= 1;
-    } else if (onCount === 8) {
-      this.contents.fontSize -= 3;
+    // 自動調整がオンならば表示項目数に応じてフォントサイズを調整
+    if (ADJUST_FLAG === true) {
+      if (onCount === 7) {
+        this.contents.fontSize -= 1;
+      } else if (onCount === 8) {
+        this.contents.fontSize -= 3;
+      }
     }
 
     for (let i = 0; i < 8; i++) {
@@ -138,7 +152,7 @@
       }
     }
 
-    //フォントサイズを元に戻す
+    // フォントサイズを元に戻す
     this.contents.fontSize = tempFontSize;
   };
 
@@ -146,12 +160,15 @@
   Window_EquipStatus.prototype.paramY = function (index, onCount) {
     let offsetY = 0;
     let shortenSpan = 0;
-    if (onCount === 7) {
-      offsetY = -2;
-      shortenSpan = -1;
-    } else if (onCount === 8) {
-      offsetY = -8;
-      shortenSpan = -5;
+    // 自動調整がオンならば調整を実施
+    if (ADJUST_FLAG === true) {
+      if (onCount === 7) {
+        offsetY = -2;
+        shortenSpan = -1;
+      } else if (onCount === 8) {
+        offsetY = -8;
+        shortenSpan = -5;
+      }
     }
     const faceHeight = ImageManager.faceHeight;
     return (
