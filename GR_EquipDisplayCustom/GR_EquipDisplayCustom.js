@@ -5,7 +5,7 @@
 // Released under the MIT License.
 // https://opensource.org/licenses/mit-license.php
 // ----------------------------------------------------------------------------
-// Version 1.1.0
+// Version 1.1.1
 //=============================================================================
 /*:ja
  * @target MZ
@@ -135,7 +135,7 @@
     // 標準のフォントサイズを一時保存
     const tempFontSize = this.contents.fontSize;
     // 自動調整がオンならば表示項目数に応じてフォントサイズを調整
-    if (ADJUST_FLAG === true) {
+    if (ADJUST_FLAG) {
       if (onCount === 7) {
         this.contents.fontSize -= 1;
       } else if (onCount === 8) {
@@ -161,7 +161,7 @@
     let offsetY = 0;
     let shortenSpan = 0;
     // 自動調整がオンならば調整を実施
-    if (ADJUST_FLAG === true) {
+    if (ADJUST_FLAG) {
       if (onCount === 7) {
         offsetY = -2;
         shortenSpan = -1;
