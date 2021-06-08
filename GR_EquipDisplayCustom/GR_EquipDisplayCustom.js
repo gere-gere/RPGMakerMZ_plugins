@@ -123,7 +123,7 @@
   let onCount = 0;
   for (let value of Object.values(PARAMETERS)) {
     PARAM_DISP[index] = value === 'true' ? true : false;
-    if (PARAM_DISP[index] === true) onCount++;
+    if (PARAM_DISP[index]) onCount++;
     index++;
     if (index === 8) break;
   }
@@ -144,7 +144,7 @@
     }
 
     for (let i = 0; i < 8; i++) {
-      if (PARAM_DISP[i] === true) {
+      if (PARAM_DISP[i]) {
         const x = this.itemPadding();
         const y = this.paramY(dispIndex, onCount);
         this.drawItem(x, y, i);
