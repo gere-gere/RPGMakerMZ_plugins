@@ -9,7 +9,7 @@
 //=============================================================================
 /*:ja
  * @target MZ
- * @plugindesc
+ * @plugindesc 装備画面で表示項目を任意でオン/オフできるようにします
  * @author げれげれ
  * @url https://twitter.com/geregeregere
  *
